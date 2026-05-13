@@ -1,12 +1,12 @@
 :root {
-  --background: #0d0d0d; /* Sfondo grigio scurissimo, non nero piatto */
-  --panel: #141414;      /* Pannelli leggermente più chiari */
-  --accent: #00f5a0;     /* Verde Smeraldo Neon più luminoso */
-  --accent-glow: rgba(0, 245, 160, 0.2);
-  --text-main: #f0f0f0;
-  --text-muted: #757575;
-  --border: #222222;     /* Bordi più definiti per dare luce */
-  --border-bright: #2d2d2d;
+  --background: #0a0a0a;       /* Sfondo ultra-dark */
+  --panel: #141414;            /* Pannelli leggermente più chiari */
+  --accent: #00ff9d;           /* Verde Smeraldo Neon */
+  --accent-glow: rgba(0, 255, 157, 0.2);
+  --border: #222222;           /* Bordi sottili */
+  --border-bright: #333333;    /* Bordi per elementi attivi */
+  --text-main: #ffffff;
+  --text-muted: #888888;
 }
 
 body {
@@ -19,13 +19,15 @@ body {
 
 /* Effetto profondità card */
 .glow-card {
+  background: linear-gradient(145deg, #1a1a1a, #141414);
   transition: all 0.3s ease;
-  background: linear-gradient(145deg, #161616 0%, #0f0f0f 100%);
+  border: 1px solid var(--border);
 }
 
 .glow-card:hover {
-  border-color: var(--accent) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.05);
+  transform: translateY(-2px);
 }
 
 /* Scrollbar Neon */

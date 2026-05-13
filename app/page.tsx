@@ -74,11 +74,20 @@ export default function App() {
   if (!mounted) return null;
 
   const categoryFiltered = activeCategory === "All" ? todos : todos.filter(t => t.category === activeCategory);
-  const finalFiltered = categoryFiltered.filter(t => {
-    if (statusFilter === 'Active') return !t.completed;
-    if (statusFilter === 'Completed') return t.completed;
-    return true;
-  });
+  
+  // LOGICA DI FILTRO E ORDINAMENTO
+  const finalFiltered = categoryFiltered
+    .filter(t => {
+      if (statusFilter === 'Active') return !t.completed;
+      if (statusFilter === 'Completed') return t.completed;
+      return true;
+    })
+    .sort((a, b) => {
+      // Se lo stato di completamento è uguale, non cambiare ordine
+      if (a.completed === b.completed) return 0;
+      // Sposta i completati (true) dopo i non completati (false)
+      return a.completed ? 1 : -1;
+    });
 
   return (
     <div style={{ display: 'flex', height: '100vh', backgroundColor: 'var(--background)', color: 'var(--text-main)', fontFamily: 'Inter, sans-serif' }}>
