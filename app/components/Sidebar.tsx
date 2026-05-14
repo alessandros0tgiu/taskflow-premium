@@ -11,17 +11,16 @@ const iconMap: any = {
 
 export function Sidebar({ categories, activeCategory, onSelectCategory, todos }: any) {
   return (
-    <aside style={{ 
+    <aside className="sidebar-desktop" style={{ 
       width: '280px', 
       backgroundColor: '#000', 
-      borderRight: 'none', // LINEA VERTICALE RIMOSSA
+      borderRight: 'none', 
       display: 'flex', 
       flexDirection: 'column',
       flexShrink: 0
     }}>
       <nav style={{ padding: '24px' }}>
         <p style={{ fontSize: '0.65rem', color: '#444', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '15px', fontWeight: 600 }}>Categories</p>
-        
         <div 
           onClick={() => onSelectCategory("All")}
           style={{ 

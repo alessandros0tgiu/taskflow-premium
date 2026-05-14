@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react"; 
 import { Sidebar } from "./components/Sidebar";
 import { DashboardStats } from "./components/Dashboard";
 import { TodoInput } from "./components/todo/TodoInput";
@@ -17,23 +18,15 @@ export default function App() {
   const [statusFilter, setStatusFilter] = useState<'All' | 'Active' | 'Completed'>('All');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingText, setEditingText] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     setTodos(getTodos());
   }, []);
 
-  // Reset errore quando l'utente ricomincia a scrivere
-  useEffect(() => {
-    if (text.trim()) setIsError(false);
-  }, [text]);
-
   const handleAdd = (e: any) => {
     e.preventDefault();
-    if (!text.trim()) { 
-      setIsError(true); 
-      return; 
-    }
-    
+    if (!text.trim()) { setIsError(true); return; }
     const newTodo: Todo = {
       id: crypto.randomUUID(),
       text: text.trim(),
@@ -42,7 +35,6 @@ export default function App() {
       category: selectedCategory,
       createdAt: new Date().toISOString()
     };
-    
     const updated = [newTodo, ...todos];
     setTodos(updated);
     saveTodos(updated);
@@ -50,111 +42,116 @@ export default function App() {
     setIsError(false);
   };
 
-  const toggle = (id: string) => {
-    const updated = todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-    setTodos(updated);
-    saveTodos(updated);
-  };
+  // 1. Filtro per categoria
+  const categoryFiltered = activeCategory === "All" ? todos : todos.filter(t => t.category === activeCategory);
 
-  const deleteTask = (id: string) => {
-    const updated = todos.filter(t => t.id !== id);
-    setTodos(updated);
-    saveTodos(updated);
-  };
-
-  const startEditing = (id: string, text: string) => {
-    setEditingId(id);
-    setEditingText(text);
-  };
-
-  const saveEdit = (id: string) => {
-    // CONTROLLO ERRORI IN MODIFICA: No nomi vuoti o solo spazi
-    if (!editingText.trim()) {
-      alert("Il nome della task non può essere vuoto!");
-      return;
-    }
-    const updated = todos.map(t => t.id === id ? { ...t, text: editingText.trim() } : t);
-    setTodos(updated);
-    saveTodos(updated);
-    setEditingId(null);
-  };
-
-  // 1. FILTRO PER CATEGORIA (SIDEBAR)
-  const categoryFiltered = activeCategory === "All" 
-    ? todos 
-    : todos.filter(t => t.category === activeCategory);
-
-  // 2. FILTRO PER STATO (FILTERBAR: All, Active, Completed)
-  const statusFiltered = categoryFiltered.filter(t => {
-    if (statusFilter === 'Active') return !t.completed;
-    if (statusFilter === 'Completed') return t.completed;
-    return true;
-  });
-
-  // 3. ORDINAMENTO: Le più recenti appaiono per prime
-  const finalTodos = [...statusFiltered].sort((a, b) => 
-    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  // 2. Filtro per stato e ORDINAMENTO RIPRISTINATO
+  const finalTodos = categoryFiltered
+    .filter(t => {
+      if (statusFilter === 'Active') return !t.completed;
+      if (statusFilter === 'Completed') return t.completed;
+      return true;
+    })
+    .sort((a, b) => {
+      // Prima regola: le task non completate (false) vanno sopra (true)
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+      // Seconda regola: le più recenti (createdAt) in alto
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#000' }}>
       
-      {/* HEADER SUPERIORE */}
+      {/* HEADER RESPONSIVE */}
       <header style={{ 
         width: '100%', display: 'flex', alignItems: 'center', gap: '16px', 
-        padding: '20px 32px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', 
-        backgroundColor: '#000', flexShrink: 0 
+        padding: '16px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', 
+        backgroundColor: '#000', flexShrink: 0, zIndex: 100
       }}>
-        <div style={{ backgroundColor: '#2DD4BF', padding: '10px', borderRadius: '12px', display: 'flex', alignItems: 'center' }}>
-          <svg style={{ width: '20px', height: '20px', color: '#000' }} fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+        <button 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px', display: 'flex', alignItems: 'center' }}
+          className="mobile-menu-btn"
+        >
+          {isMenuOpen ? <X size={24} color="#2DD4BF" /> : <Menu size={24} />}
+        </button>
+
+        <div style={{ backgroundColor: '#2DD4BF', padding: '8px', borderRadius: '10px', display: 'flex' }}>
+          <svg style={{ width: '18px', height: '18px', color: '#000' }} fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
             <path d="M13 5h8M13 12h8M13 19h8M3 17l2 2 4-4M3 7l2 2 4-4" />
           </svg>
         </div>
+
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fff', margin: 0, lineHeight: 1 }}>TaskFlow</h1>
-          <span style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '6px', fontWeight: 500 }}>Manage your tasks</span>
+          <h1 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff', margin: 0 }}>TaskFlow</h1>
+          <span className="header-subtitle" style={{ fontSize: '0.65rem', color: '#555' }}>Manage your tasks</span>
         </div>
       </header>
 
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <Sidebar 
-          categories={getCategories()} 
-          activeCategory={activeCategory} 
-          onSelectCategory={setActiveCategory} 
-          todos={todos} 
-        />
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
         
-        <main style={{ flex: 1, padding: '40px', overflowY: 'auto' }}>
-          <DashboardStats todos={categoryFiltered} />
-
-          <TodoInput 
-            text={text} setText={setText} 
-            priority={priority} setPriority={setPriority}
-            selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
-            isError={isError} onAdd={handleAdd}
+        <div className={`sidebar-container ${isMenuOpen ? 'open' : ''}`}>
+          <Sidebar 
+            categories={getCategories()} 
+            activeCategory={activeCategory} 
+            onSelectCategory={(cat: string) => {
+              setActiveCategory(cat);
+              setIsMenuOpen(false);
+            }} 
+            todos={todos} 
           />
+        </div>
 
-          <FilterBar 
-            statusFilter={statusFilter} 
-            setStatusFilter={setStatusFilter}
-            counts={{
-              all: categoryFiltered.length,
-              active: categoryFiltered.filter(t => !t.completed).length,
-              completed: categoryFiltered.filter(t => t.completed).length
-            }}
-          />
+        {isMenuOpen && <div onClick={() => setIsMenuOpen(false)} className="mobile-overlay" />}
+        
+        <main className="main-content" style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <DashboardStats todos={categoryFiltered} />
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {finalTodos.map(t => (
-              <TodoItem 
-                key={t.id} todo={t}
-                isEditing={editingId === t.id}
-                editingText={editingText}
-                setEditingText={setEditingText}
-                onToggle={toggle} onDelete={deleteTask}
-                onStartEdit={startEditing} onSaveEdit={saveEdit}
+            <TodoInput 
+              text={text} setText={setText} 
+              priority={priority} setPriority={setPriority}
+              selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
+              isError={isError} onAdd={handleAdd}
+            />
+
+            <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
+              <FilterBar 
+                statusFilter={statusFilter} setStatusFilter={setStatusFilter}
+                counts={{
+                  all: categoryFiltered.length,
+                  active: categoryFiltered.filter(t => !t.completed).length,
+                  completed: categoryFiltered.filter(t => t.completed).length
+                }}
               />
-            ))}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '40px' }}>
+              {finalTodos.map(t => (
+                <TodoItem 
+                  key={t.id} todo={t}
+                  isEditing={editingId === t.id}
+                  editingText={editingText}
+                  setEditingText={setEditingText}
+                  onToggle={(id) => {
+                    const u = todos.map(x => x.id === id ? {...x, completed: !x.completed} : x);
+                    setTodos(u); saveTodos(u);
+                  }} 
+                  onDelete={(id) => {
+                    const u = todos.filter(x => x.id !== id);
+                    setTodos(u); saveTodos(u);
+                  }}
+                  onStartEdit={(id, txt) => { setEditingId(id); setEditingText(txt); }} 
+                  onSaveEdit={(id) => {
+                    if(!editingText.trim()) return;
+                    const u = todos.map(x => x.id === id ? {...x, text: editingText.trim()} : x);
+                    setTodos(u); saveTodos(u); setEditingId(null);
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </main>
       </div>
