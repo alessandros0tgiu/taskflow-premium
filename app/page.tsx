@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react"; 
 import { Sidebar } from "./components/Sidebar";
 import { DashboardStats } from "./components/Dashboard";
 import { TodoInput } from "./components/todo/TodoInput";
@@ -42,10 +41,8 @@ export default function App() {
     setIsError(false);
   };
 
-  // 1. Filtro per categoria
   const categoryFiltered = activeCategory === "All" ? todos : todos.filter(t => t.category === activeCategory);
 
-  // 2. Filtro per stato (All, Active, Completed) e ORDINAMENTO
   const finalTodos = categoryFiltered
     .filter(t => {
       if (statusFilter === 'Active') return !t.completed;
@@ -53,32 +50,25 @@ export default function App() {
       return true;
     })
     .sort((a, b) => {
-      // Regola 1: Aperte sopra, Completate sotto
       if (a.completed !== b.completed) {
         return a.completed ? 1 : -1;
       }
-      // Regola 2: Più recenti in alto
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#000' }}>
       
-      {/* HEADER RESPONSIVE */}
-      <header style={{ 
-        width: '100%', display: 'flex', alignItems: 'center', gap: '16px', 
-        padding: '16px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', 
-        backgroundColor: '#000', flexShrink: 0, zIndex: 110
-      }}>
-        {/* Bottone Menu: Visibile solo su Mobile via globals.css */}
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px', display: 'flex', alignItems: 'center' }}
-          className="mobile-menu-btn"
-        >
-          {isMenuOpen ? <X size={24} color="#2DD4BF" /> : <Menu size={24} />}
-        </button>
-
+      {/* HEADER: Ora tutto il blocco Logo + Titolo è cliccabile */}
+      <header 
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        style={{ 
+          width: '100%', display: 'flex', alignItems: 'center', gap: '16px', 
+          padding: '16px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', 
+          backgroundColor: '#000', flexShrink: 0, zIndex: 110,
+          cursor: 'pointer' // Indica che è cliccabile
+        }}
+      >
         <div style={{ backgroundColor: '#2DD4BF', padding: '8px', borderRadius: '10px', display: 'flex' }}>
           <svg style={{ width: '18px', height: '18px', color: '#000' }} fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
             <path d="M13 5h8M13 12h8M13 19h8M3 17l2 2 4-4M3 7l2 2 4-4" />
@@ -87,26 +77,26 @@ export default function App() {
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h1 style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#fff', margin: 0 }}>TaskFlow</h1>
-          <span className="header-subtitle" style={{ fontSize: '0.65rem', color: '#555' }}>Manage your tasks</span>
+          <span className="header-subtitle" style={{ fontSize: '0.65rem', color: '#555' }}>
+            {isMenuOpen ? "Click to close" : "Click to explore"}
+          </span>
         </div>
       </header>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
         
-        {/* SIDEBAR: La classe 'open' è gestita dalle media queries in globals.css */}
         <div className={`sidebar-container ${isMenuOpen ? 'open' : ''}`}>
           <Sidebar 
             categories={getCategories()} 
             activeCategory={activeCategory} 
             onSelectCategory={(cat: string) => {
               setActiveCategory(cat);
-              setIsMenuOpen(false); // Chiude il menu dopo la selezione su mobile
+              setIsMenuOpen(false); 
             }} 
             todos={todos} 
           />
         </div>
 
-        {/* Overlay per chiudere il menu cliccando fuori (solo mobile) */}
         {isMenuOpen && <div onClick={() => setIsMenuOpen(false)} className="mobile-overlay" />}
         
         <main className="main-content" style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
