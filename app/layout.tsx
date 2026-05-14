@@ -13,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="it">
-      <body>{children}</body>
+      {/* Il padding-top di 2px serve a compensare lo spessore della barra superiore */}
+      <body style={{ paddingTop: '2px' }}>
+        {children}
+      </body>
     </html>
   )
 }

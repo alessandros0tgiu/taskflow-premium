@@ -1,26 +1,43 @@
 :root {
-  --background: #000000; /* Nero puro come nella foto */
-  --panel: #0a0a0a;      /* Pannelli leggermente più chiari */
-  --accent: #2DD4BF;     /* Il tuo colore Teal */
-  --accent-dark: #14B8A6; 
-  --accent-glow: rgba(45, 212, 191, 0.15); /* Bagliore coordinato */
-  --border: #111111;     /* Bordi molto sottili come nello screenshot */
+  --background: #000000;
+  /* Nero puro come nella foto */
+  --panel: #0a0a0a;
+  /* Pannelli leggermente più chiari */
+  --accent: #2DD4BF;
+  /* Il tuo colore Teal */
+  --accent-dark: #14B8A6;
+  --accent-glow: rgba(45, 212, 191, 0.15);
+  /* Bagliore coordinato */
+  --border: #111111;
+  /* Bordi molto sottili come nello screenshot */
   --border-bright: #222222;
   --text-main: #ffffff;
-  --text-muted: #444444; /* Grigio scuro per i testi secondari */
+  --text-muted: #444444;
+}
+
+/* LA BARRA SUPERIORE IDENTICA ALLA FOTO */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 10000;
 }
 
 body {
   background-color: var(--background);
-  color: var(--text-main);
-  font-family: 'Inter', sans-serif;
+  color: #ffffff;
   margin: 0;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 /* Effetto profondità card migliorato per il Teal */
 .glow-card {
-  background: #050505; 
+  background: #050505;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
 }
@@ -28,27 +45,27 @@ body {
 .glow-card:hover {
   border-color: var(--accent);
   /* Corretto il colore del bagliore qui sotto */
-  box-shadow: 0 0 25px rgba(45, 212, 191, 0.1); 
+  box-shadow: 0 0 25px rgba(45, 212, 191, 0.1);
   transform: translateY(-2px);
 }
-/* Scrollbar coordinata - Versione Minimal Ghost */
+
+/* Scrollbar minimale */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent; /* Ancora più pulito */
+  background: #000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--background); /* Inizialmente invisibile */
+  background: #111;
   border-radius: 10px;
-  border: 1px solid var(--border); /* Un filo di bordo per distinguerla leggermente */
 }
 
 /* La scrollbar si illumina solo quando scorri o ci passi sopra */
 *:hover::-webkit-scrollbar-thumb {
-  background: var(--border-bright); 
+  background: var(--border-bright);
 }
 
 /* Supporto per Firefox */
