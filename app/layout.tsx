@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'TaskFlow Premium',
+  title: 'TaskFlow',
   description: 'Manage your tasks with style',
 }
 
