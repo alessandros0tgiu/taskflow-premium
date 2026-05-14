@@ -45,7 +45,7 @@ export default function App() {
   // 1. Filtro per categoria
   const categoryFiltered = activeCategory === "All" ? todos : todos.filter(t => t.category === activeCategory);
 
-  // 2. Filtro per stato e ORDINAMENTO RIPRISTINATO
+  // 2. Filtro per stato (All, Active, Completed) e ORDINAMENTO
   const finalTodos = categoryFiltered
     .filter(t => {
       if (statusFilter === 'Active') return !t.completed;
@@ -53,11 +53,11 @@ export default function App() {
       return true;
     })
     .sort((a, b) => {
-      // Prima regola: le task non completate (false) vanno sopra (true)
+      // Regola 1: Aperte sopra, Completate sotto
       if (a.completed !== b.completed) {
         return a.completed ? 1 : -1;
       }
-      // Seconda regola: le più recenti (createdAt) in alto
+      // Regola 2: Più recenti in alto
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
@@ -68,8 +68,9 @@ export default function App() {
       <header style={{ 
         width: '100%', display: 'flex', alignItems: 'center', gap: '16px', 
         padding: '16px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', 
-        backgroundColor: '#000', flexShrink: 0, zIndex: 100
+        backgroundColor: '#000', flexShrink: 0, zIndex: 110
       }}>
+        {/* Bottone Menu: Visibile solo su Mobile via globals.css */}
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: '8px', display: 'flex', alignItems: 'center' }}
@@ -92,22 +93,25 @@ export default function App() {
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
         
+        {/* SIDEBAR: La classe 'open' è gestita dalle media queries in globals.css */}
         <div className={`sidebar-container ${isMenuOpen ? 'open' : ''}`}>
           <Sidebar 
             categories={getCategories()} 
             activeCategory={activeCategory} 
             onSelectCategory={(cat: string) => {
               setActiveCategory(cat);
-              setIsMenuOpen(false);
+              setIsMenuOpen(false); // Chiude il menu dopo la selezione su mobile
             }} 
             todos={todos} 
           />
         </div>
 
+        {/* Overlay per chiudere il menu cliccando fuori (solo mobile) */}
         {isMenuOpen && <div onClick={() => setIsMenuOpen(false)} className="mobile-overlay" />}
         
         <main className="main-content" style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            
             <DashboardStats todos={categoryFiltered} />
 
             <TodoInput 

@@ -14,12 +14,7 @@ export function DashboardStats({ todos }: DashboardStatsProps) {
   const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(4, 1fr)',
-      gap: '15px', // Gap ridotto come in foto
-      marginBottom: '40px'
-    }}>
+    <div className="stats-grid">
       <StatCard icon={<ListTodo size={22} color="#2DD4BF" />} label="Total Tasks" value={total.toString()} />
       <StatCard icon={<CheckCircle2 size={22} color="#2DD4BF" />} label="Completed" value={completed.toString()} />
       <StatCard icon={<Circle size={22} color="#2DD4BF" />} label="Active" value={active.toString()} />

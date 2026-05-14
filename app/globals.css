@@ -77,62 +77,86 @@ body {
 }
 
 /* ... (root e body-before precedenti) ... */
-
-.mobile-menu-btn {
-  display: none;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 40px;
 }
 
+/* Sidebar: Fissa su PC, Overlay a comparsa su Mobile */
 .sidebar-container {
   width: 280px;
   background-color: #000;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
   transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
 @media (max-width: 1024px) {
-  .mobile-menu-btn {
-    display: flex;
-  }
-
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  
   .sidebar-container {
     position: fixed;
-    top: 0;
     left: 0;
+    top: 0;
     bottom: 0;
-    z-index: 150;
-    padding-top: 80px; /* Spazio per l'header */
-    transform: translateX(-100%);
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transform: translateX(-100%); /* Nasconde */
   }
 
   .sidebar-container.open {
-    transform: translateX(0);
+    transform: translateX(0); /* Mostra */
   }
 
   .mobile-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0,0,0,0.7);
     backdrop-filter: blur(4px);
-    z-index: 140;
-  }
-
-  .main-content {
-    padding: 20px !important;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr 1fr !important;
+    z-index: 999;
   }
 }
 
 @media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: 1fr !important;
+  .main-content {
+    padding: 16px !important;
   }
-  .header-subtitle {
+}
+@media (max-width: 1024px) {
+  .main-content {
+    width: 100% !important;
+    padding: 15px !important;
+    margin: 0 !important;
+  }
+  
+  /* Nasconde la scrollbar della filterbar */
+  .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Fix per i selettori dentro TodoInput su mobile */
+@media (max-width: 600px) {
+  .input-controls {
+    border-left: none !important;
+    padding-left: 0 !important;
+    margin-top: 10px;
+    width: 100%;
+    justify-content: space-between !important;
+  }
+}
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden; /* Blocca lo scorrimento laterale */
+  position: relative;
+}
+
+/* Assicurati che il main non superi mai la larghezza dello schermo */
+.main-content {
+  width: 100% !important;
+  max-width: 100vw !important;
+  box-sizing: border-box;
 }
