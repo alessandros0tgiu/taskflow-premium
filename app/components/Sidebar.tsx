@@ -1,5 +1,5 @@
 "use client";
-import { Hash, ListTodo, Home, Briefcase, ShoppingCart, Heart, GraduationCap } from 'lucide-react';
+import { Hash, Home, Briefcase, ShoppingCart, Heart, GraduationCap } from 'lucide-react';
 
 const iconMap: any = {
   Personal: <Home size={18} />,
@@ -11,20 +11,17 @@ const iconMap: any = {
 
 export function Sidebar({ categories, activeCategory, onSelectCategory, todos }: any) {
   return (
-    <aside style={{ width: '280px', backgroundColor: '#000', borderRight: '1px solid #111', padding: '24px', display: 'flex', flexDirection: 'column' }}>
-      {/* HEADER SIDEBAR: Icona e Testo nudi su sfondo nero */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px', paddingLeft: '4px' }}>
-        <div style={{ color: '#2DD4BF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <ListTodo size={28} strokeWidth={2.5} />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#fff', margin: 0, lineHeight: 1.2, letterSpacing: '-0.5px' }}>TaskFlow</h2>
-          <p style={{ fontSize: '0.75rem', color: '#555', margin: 0, fontWeight: 500 }}>Manage your tasks</p>
-        </div>
-      </div>
-
-      <nav>
+    <aside style={{ 
+      width: '280px', 
+      backgroundColor: '#000', 
+      borderRight: 'none', // LINEA VERTICALE RIMOSSA
+      display: 'flex', 
+      flexDirection: 'column',
+      flexShrink: 0
+    }}>
+      <nav style={{ padding: '24px' }}>
         <p style={{ fontSize: '0.65rem', color: '#444', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '15px', fontWeight: 600 }}>Categories</p>
+        
         <div 
           onClick={() => onSelectCategory("All")}
           style={{ 

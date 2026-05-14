@@ -2,9 +2,9 @@ export interface Todo {
   id: string;
   text: string;
   completed: boolean;
-  category: string;
   priority: 'Low' | 'Medium' | 'High';
-  date: string;
+  category: string;
+  createdAt: string; // Indispensabile per l'ordinamento
 }
 
 export const getTodos = (): Todo[] => {
