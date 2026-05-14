@@ -23,22 +23,22 @@ export function DashboardStats({ todos }: DashboardStatsProps) {
       marginBottom: '30px'
     }}>
       <StatCard 
-        icon={<ListTodo size={20} color="#00ffa3" />} 
+        icon={<ListTodo size={20} color="#2DD4BF" />} 
         label="Total Tasks" 
         value={total.toString()} 
       />
       <StatCard 
-        icon={<CheckCircle2 size={20} color="#00ffa3" />} 
+        icon={<CheckCircle2 size={20} color="#2DD4BF" />} 
         label="Completed" 
         value={completed.toString()} 
       />
       <StatCard 
-        icon={<Circle size={20} color="#00ffa3" />} 
+        icon={<Circle size={20} color="#2DD4BF" />} 
         label="Active" 
         value={active.toString()} 
       />
       <StatCard 
-        icon={<TrendingUp size={20} color="#00ffa3" />} 
+        icon={<TrendingUp size={20} color="#2DD4BF" />} 
         label="Completion" 
         value={`${completionRate}%`} 
       />

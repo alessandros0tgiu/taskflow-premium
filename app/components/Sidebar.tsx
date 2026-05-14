@@ -1,8 +1,8 @@
 "use client";
-import { LayoutGrid, Hash, ListTodo, User, Briefcase, ShoppingCart, Heart, GraduationCap } from 'lucide-react';
+import { LayoutGrid, Hash, ListTodo, Home, Briefcase, ShoppingCart, Heart, GraduationCap } from 'lucide-react';
 
 const iconMap: any = {
-  Personal: <User size={18} />,
+  Personal: <Home size={18} />,
   Work: <Briefcase size={18} />,
   Shopping: <ShoppingCart size={18} />,
   Health: <Heart size={18} />,
@@ -13,7 +13,7 @@ export function Sidebar({ categories, activeCategory, onSelectCategory, todos }:
   return (
     <aside style={{ width: '280px', backgroundColor: '#000', borderRight: '1px solid #111', padding: '24px', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
-        <div style={{ backgroundColor: '#00ffa3', padding: '8px', borderRadius: '10px' }}>
+        <div style={{ backgroundColor: '#2DD4BF', padding: '8px', borderRadius: '10px' }}>
           <ListTodo size={22} color="#000" />
         </div>
         <div>
@@ -29,7 +29,7 @@ export function Sidebar({ categories, activeCategory, onSelectCategory, todos }:
           style={{ 
             padding: '12px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             backgroundColor: activeCategory === "All" ? 'rgba(0,255,163,0.05)' : 'transparent',
-            color: activeCategory === "All" ? '#00ffa3' : '#666'
+            color: activeCategory === "All" ? '#2DD4BF' : '#666'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><LayoutGrid size={18} /> All Categories</div>

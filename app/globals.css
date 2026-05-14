@@ -1,12 +1,13 @@
 :root {
-  --background: #0a0a0a;       /* Sfondo ultra-dark */
-  --panel: #141414;            /* Pannelli leggermente più chiari */
-  --accent: #00ff9d;           /* Verde Smeraldo Neon */
-  --accent-glow: rgba(0, 255, 157, 0.2);
-  --border: #222222;           /* Bordi sottili */
-  --border-bright: #333333;    /* Bordi per elementi attivi */
+  --background: #000000; /* Nero puro come nella foto */
+  --panel: #0a0a0a;      /* Pannelli leggermente più chiari */
+  --accent: #2DD4BF;     /* Il tuo colore Teal */
+  --accent-dark: #14B8A6; 
+  --accent-glow: rgba(45, 212, 191, 0.15); /* Bagliore coordinato */
+  --border: #111111;     /* Bordi molto sottili come nello screenshot */
+  --border-bright: #222222;
   --text-main: #ffffff;
-  --text-muted: #888888;
+  --text-muted: #444444; /* Grigio scuro per i testi secondari */
 }
 
 body {
@@ -17,22 +18,41 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Effetto profondità card */
+/* Effetto profondità card migliorato per il Teal */
 .glow-card {
-  background: linear-gradient(145deg, #1a1a1a, #141414);
-  transition: all 0.3s ease;
+  background: #050505; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
 }
 
 .glow-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(0, 255, 157, 0.05);
+  /* Corretto il colore del bagliore qui sotto */
+  box-shadow: 0 0 25px rgba(45, 212, 191, 0.1); 
   transform: translateY(-2px);
 }
+/* Scrollbar coordinata - Versione Minimal Ghost */
+::-webkit-scrollbar {
+  width: 5px;
+}
 
-/* Scrollbar Neon */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-thumb { 
-  background: var(--accent); 
+::-webkit-scrollbar-track {
+  background: transparent; /* Ancora più pulito */
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--background); /* Inizialmente invisibile */
   border-radius: 10px;
+  border: 1px solid var(--border); /* Un filo di bordo per distinguerla leggermente */
+}
+
+/* La scrollbar si illumina solo quando scorri o ci passi sopra */
+*:hover::-webkit-scrollbar-thumb {
+  background: var(--border-bright); 
+}
+
+/* Supporto per Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--background) transparent;
 }
