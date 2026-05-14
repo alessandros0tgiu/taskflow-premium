@@ -1,5 +1,5 @@
 "use client";
-import { LayoutGrid, Hash, ListTodo, Home, Briefcase, ShoppingCart, Heart, GraduationCap } from 'lucide-react';
+import { Hash, ListTodo, Home, Briefcase, ShoppingCart, Heart, GraduationCap } from 'lucide-react';
 
 const iconMap: any = {
   Personal: <Home size={18} />,
@@ -32,7 +32,7 @@ export function Sidebar({ categories, activeCategory, onSelectCategory, todos }:
             color: activeCategory === "All" ? '#2DD4BF' : '#666'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}><LayoutGrid size={18} /> All Categories</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}> All Categories</div>
         </div>
 
         {categories.map((cat: string) => {

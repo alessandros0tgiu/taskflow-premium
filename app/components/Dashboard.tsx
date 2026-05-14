@@ -11,37 +11,19 @@ export function DashboardStats({ todos }: DashboardStatsProps) {
   const total = todos.length;
   const completed = todos.filter(t => t.completed).length;
   const active = total - completed;
-  
-  // Calcolo della percentuale di completamento
   const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
     <div style={{
       display: 'grid',
       gridTemplateColumns: 'repeat(4, 1fr)',
-      gap: '20px',
-      marginBottom: '30px'
+      gap: '15px', // Gap ridotto come in foto
+      marginBottom: '40px'
     }}>
-      <StatCard 
-        icon={<ListTodo size={20} color="#2DD4BF" />} 
-        label="Total Tasks" 
-        value={total.toString()} 
-      />
-      <StatCard 
-        icon={<CheckCircle2 size={20} color="#2DD4BF" />} 
-        label="Completed" 
-        value={completed.toString()} 
-      />
-      <StatCard 
-        icon={<Circle size={20} color="#2DD4BF" />} 
-        label="Active" 
-        value={active.toString()} 
-      />
-      <StatCard 
-        icon={<TrendingUp size={20} color="#2DD4BF" />} 
-        label="Completion" 
-        value={`${completionRate}%`} 
-      />
+      <StatCard icon={<ListTodo size={22} color="#2DD4BF" />} label="Total Tasks" value={total.toString()} />
+      <StatCard icon={<CheckCircle2 size={22} color="#2DD4BF" />} label="Completed" value={completed.toString()} />
+      <StatCard icon={<Circle size={22} color="#2DD4BF" />} label="Active" value={active.toString()} />
+      <StatCard icon={<TrendingUp size={22} color="#2DD4BF" />} label="Completion" value={`${completionRate}%`} />
     </div>
   );
 }
@@ -49,20 +31,27 @@ export function DashboardStats({ todos }: DashboardStatsProps) {
 function StatCard({ icon, label, value }: { icon: any, label: string, value: string }) {
   return (
     <div style={{
-      backgroundColor: '#050505',
-      padding: '24px',
-      borderRadius: '16px',
-      border: '1px solid #111',
+      backgroundColor: '#0a0a0a', // Più scuro
+      padding: '20px 25px',
+      borderRadius: '12px',
+      border: '1px solid #1a1a1a',
       display: 'flex',
-      flexDirection: 'column',
-      gap: '12px',
-      minWidth: '0'
+      alignItems: 'center', // Allineamento orizzontale
+      gap: '20px',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#444', fontSize: '0.85rem' }}>
-        {icon} <span style={{ fontWeight: 500 }}>{label}</span>
+      <div style={{ 
+        backgroundColor: 'rgba(45, 212, 191, 0.05)', 
+        padding: '12px', 
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        {icon}
       </div>
-      <div style={{ fontSize: '2rem', fontWeight: 700, color: '#fff' }}>
-        {value}
+      <div>
+        <div style={{ fontSize: '1.8rem', fontWeight: 700, color: '#fff', lineHeight: '1.1' }}>{value}</div>
+        <div style={{ color: '#555', fontSize: '0.75rem', marginTop: '4px', fontWeight: 500 }}>{label}</div>
       </div>
     </div>
   );
